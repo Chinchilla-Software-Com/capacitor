@@ -14,9 +14,12 @@ export async function buildAndroid(
   const releaseType = buildOptions.androidreleasetype ?? 'AAB';
   const releaseTypeIsAAB = releaseType === 'AAB';
   const flavor = buildOptions.flavor ?? '';
+  const configuration = buildOptions.configuration ?? 'Release';
+  const isReleaseBuild = configuration === 'Release';
+
   const arg = releaseTypeIsAAB
-    ? `:app:bundle${flavor}Release`
-    : `assemble${flavor}Release`;
+    ? `:app:bundle${flavor}${configuration}`
+    : `assemble${flavor}${configuration}`;
   const gradleArgs = [arg];
 
   try {
@@ -37,11 +40,11 @@ export async function buildAndroid(
 
   const releaseDir = releaseTypeIsAAB
     ? flavor !== ''
-      ? `${flavor}Release`
-      : 'release'
+      ? `${flavor}${configuration}`
+      : `${configuration}`
     : flavor !== ''
-    ? join(flavor, 'release')
-    : 'release';
+    ? join(flavor, `${configuration}`)
+    : `${configuration}`;
 
   const releasePath = join(
     config.android.appDirAbs,
@@ -51,15 +54,15 @@ export async function buildAndroid(
     releaseDir,
   );
 
-  const unsignedReleaseName = `app${flavor !== '' ? `-${flavor}` : ''}-release${
-    releaseTypeIsAAB ? '' : '-unsigned'
+  const unsignedReleaseName = `app${flavor !== '' ? `-${flavor}` : ''}-${configuration}{
+    releaseTypeIsAAB || !isReleaseBuild ? '' : '-unsigned'
   }.${releaseType.toLowerCase()}`;
 
   const signedReleaseName = unsignedReleaseName.replace(
-    `-release${
-      releaseTypeIsAAB ? '' : '-unsigned'
+    `-${configuration}{
+      releaseTypeIsAAB || !isReleaseBuild ? '' : '-unsigned'
     }.${releaseType.toLowerCase()}`,
-    `-release-signed.${releaseType.toLowerCase()}`,
+    `-${configuration}-signed.${releaseType.toLowerCase()}`,
   );
 
   if (buildOptions.signingtype == 'jarsigner') {
