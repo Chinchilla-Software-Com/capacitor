@@ -1,5 +1,5 @@
 {
-  "name": "@capacitor/cli",
+  "name": "@chinchilla-software/capacitor-cli",
   "version": "6.1.0",
   "description": "Capacitor: Cross-platform apps with JavaScript and the web",
   "homepage": "https://capacitorjs.com",
