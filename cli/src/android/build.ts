@@ -40,11 +40,11 @@ export async function buildAndroid(
 
   const releaseDir = releaseTypeIsAAB
     ? flavor !== ''
-      ? `${flavor}${configuration}`
-      : `${configuration}`
+      ? `${flavor}${configuration.toLowerCase()}`
+      : `${configuration.toLowerCase()}`
     : flavor !== ''
-    ? join(flavor, `${configuration}`)
-    : `${configuration}`;
+    ? join(flavor, `${configuration.toLowerCase()}`)
+    : `${configuration.toLowerCase()}`;
 
   const releasePath = join(
     config.android.appDirAbs,
@@ -54,15 +54,15 @@ export async function buildAndroid(
     releaseDir,
   );
 
-  const unsignedReleaseName = `app${flavor !== '' ? `-${flavor}` : ''}-${configuration}{
+  const unsignedReleaseName = `app${flavor !== '' ? `-${flavor}` : ''}-${configuration.toLowerCase()}{
     releaseTypeIsAAB || !isReleaseBuild ? '' : '-unsigned'
   }.${releaseType.toLowerCase()}`;
 
   const signedReleaseName = unsignedReleaseName.replace(
-    `-${configuration}{
+    `-${configuration.toLowerCase()}{
       releaseTypeIsAAB || !isReleaseBuild ? '' : '-unsigned'
     }.${releaseType.toLowerCase()}`,
-    `-${configuration}-signed.${releaseType.toLowerCase()}`,
+    `-${configuration.toLowerCase()}-signed.${releaseType.toLowerCase()}`,
   );
 
   if (buildOptions.signingtype == 'jarsigner') {
