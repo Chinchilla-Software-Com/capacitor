@@ -3,7 +3,7 @@
   "version": "6.1.0",
   "description": "Capacitor: Cross-platform apps with JavaScript and the web",
   "homepage": "https://capacitorjs.com",
-  "author": "Ionic Team <hi@ionic.io> (https://ionic.io)",
+  "author": "Chinchilla Software; Ionic Team <hi@ionic.io> (https://ionic.io)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -32,8 +32,8 @@
   "main": "dist/index.js",
   "types": "dist/declarations.d.ts",
   "bin": {
-    "capacitor": "./bin/capacitor",
-    "cap": "./bin/capacitor"
+    "capacitor2": "./bin/capacitor",
+    "cap2": "./bin/capacitor"
   },
   "scripts": {
     "build": "npm run clean && npm run assets && tsc",

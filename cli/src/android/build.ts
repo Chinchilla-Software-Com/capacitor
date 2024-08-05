@@ -40,11 +40,11 @@ export async function buildAndroid(
 
   const releaseDir = releaseTypeIsAAB
     ? flavor !== ''
-      ? `${flavor}${configuration.toLowerCase()}`
-      : `${configuration.toLowerCase()}`
+      ? `${flavor}${configuration}`
+      : `${configuration}`
     : flavor !== ''
-    ? join(flavor, `${configuration.toLowerCase()}`)
-    : `${configuration.toLowerCase()}`;
+    ? join(flavor, `${configuration}`)
+    : `${configuration}`;
 
   const releasePath = join(
     config.android.appDirAbs,
@@ -53,13 +53,12 @@ export async function buildAndroid(
     releaseTypeIsAAB ? 'bundle' : 'apk',
     releaseDir,
   );
-
-  const unsignedReleaseName = `app${flavor !== '' ? `-${flavor}` : ''}-${configuration.toLowerCase()}{
+  const unsignedReleaseName = `app${flavor !== '' ? `-${flavor.toLowerCase()}` : ''}-${configuration.toLowerCase()}${
     releaseTypeIsAAB || !isReleaseBuild ? '' : '-unsigned'
   }.${releaseType.toLowerCase()}`;
 
   const signedReleaseName = unsignedReleaseName.replace(
-    `-${configuration.toLowerCase()}{
+    `-${configuration.toLowerCase()}${
       releaseTypeIsAAB || !isReleaseBuild ? '' : '-unsigned'
     }.${releaseType.toLowerCase()}`,
     `-${configuration.toLowerCase()}-signed.${releaseType.toLowerCase()}`,
@@ -117,7 +116,7 @@ async function signWithApkSigner(
     signingArgs.push('--key-pass', `pass:${buildOptions.keystorealiaspass}`);
   }
 
-  await runTask('Signing Release', async () => {
+  await runTask('Signing with apksigner', async () => {
     await runCommand('apksigner', signingArgs, {
       cwd: config.android.platformDirAbs,
     });
@@ -157,7 +156,7 @@ async function signWithJarSigner(
     buildOptions.keystorealias,
   ];
 
-  await runTask('Signing Release', async () => {
+  await runTask('Signing with jarsigner', async () => {
     await runCommand('jarsigner', signingArgs, {
       cwd: config.android.platformDirAbs,
     });
